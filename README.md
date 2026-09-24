@@ -39,7 +39,7 @@ npm run dev
    VITE_SUPABASE_URL=
    VITE_SUPABASE_ANON_KEY=
    ```
-2. Run `supabase/migrations/0001_households.sql` in the Supabase SQL Editor — creates the households/membership/invite schema and its Row Level Security policies.
+2. Run the migrations in `supabase/migrations/` **in order** via the Supabase SQL Editor: `0001_households.sql`, then `0002_lists.sql`.
 3. For CI to build and run E2E tests, add the same two values as GitHub Actions repository secrets (**Settings → Secrets and variables → Actions**).
 
 ## Testing on an iPhone
@@ -50,5 +50,6 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 ## Build status
 
 - ✅ Phase 1 — Vite/React/TS scaffold, PWA config, testing (Vitest + Playwright), CI pipeline
-- ✅ Phase 2 — Supabase auth + household/sharing model (code complete; run the migration and add CI secrets per "Supabase setup" above to activate)
-- ⏳ Phase 3+ — lists, items, groups, drag-to-rank, trolley totals (see project plan)
+- ✅ Phase 2 — Supabase auth + household/sharing model
+- ✅ Phase 3 — Lists screen + routing (code complete; run `0002_lists.sql` per "Supabase setup" above to activate)
+- ⏳ Phase 4+ — items catalog, drag-to-rank, adding items to lists, trolley totals (see project plan)
