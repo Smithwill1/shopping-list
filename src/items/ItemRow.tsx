@@ -5,6 +5,7 @@ import { GripVertical, Pencil } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { validateItemName, validatePrice } from './validation'
 import type { Item } from './useItems'
+import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -37,11 +38,7 @@ export function ItemRow({ item, onSaved }: { item: Item; onSaved: () => void }) 
     setSubmitting(false)
 
     if (updateError) {
-      setError(
-        updateError.code === '23505'
-          ? 'An item with this name already exists'
-          : updateError.message,
-      )
+      setError(friendlyError(updateError, 'An item with this name already exists'))
       return
     }
 

@@ -8,6 +8,7 @@ import { useGroupItems } from '../group-items/useGroupItems'
 import { GroupItemRow } from '../group-items/GroupItemRow'
 import { AddItemToGroup } from '../group-items/AddItemToGroup'
 import { validateGroupName } from './validation'
+import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -55,11 +56,7 @@ export function GroupDetailPage({ householdId }: { householdId: string }) {
     setSubmitting(false)
 
     if (updateError) {
-      setError(
-        updateError.code === '23505'
-          ? 'A group with this name already exists'
-          : updateError.message,
-      )
+      setError(friendlyError(updateError, 'A group with this name already exists'))
       return
     }
 

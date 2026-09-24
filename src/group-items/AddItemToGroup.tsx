@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
@@ -19,13 +20,21 @@ export function AddItemToGroup({
   onAdded: () => void
 }) {
   const { session } = useAuth()
+  const [error, setError] = useState<string | null>(null)
   const inGroupIds = new Set(groupItems.map((groupItem) => groupItem.itemId))
   const available = catalogItems.filter((item) => !inGroupIds.has(item.id))
 
   async function addItem(itemId: string) {
-    await supabase
+    setError(null)
+    const { error: insertError } = await supabase
       .from('group_items')
       .insert({ group_id: groupId, item_id: itemId, created_by: session?.user.id })
+
+    if (insertError) {
+      setError('Could not add that item — try again')
+      return
+    }
+
     onAdded()
   }
 
@@ -33,8 +42,8 @@ export function AddItemToGroup({
 
   return (
     <Card>
-      <CardContent>
-        <h3 className="mb-2 text-base font-medium leading-snug">Add from your items</h3>
+      <CardContent className="flex flex-col gap-2">
+        <h3 className="text-base font-medium leading-snug">Add from your items</h3>
         <div className="flex flex-col">
           {available.map((item, index) => (
             <div key={item.id}>
@@ -49,6 +58,11 @@ export function AddItemToGroup({
             </div>
           ))}
         </div>
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
       </CardContent>
     </Card>
   )

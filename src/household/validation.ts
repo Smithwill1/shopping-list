@@ -1,9 +1,9 @@
+import { requireNonBlank } from '../lib/validation'
+
 export function validateHouseholdName(name: string): string | null {
-  if (!name.trim()) return 'Household name is required'
-  return null
+  return requireNonBlank(name, 'Household name')
 }
 
 export function validateInviteCode(code: string): string | null {
-  if (!code.trim()) return 'Invite code is required'
-  return null
+  return requireNonBlank(code, 'Invite code')
 }

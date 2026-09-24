@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
 import { useGroups } from './useGroups'
 import { validateGroupName } from './validation'
+import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -39,11 +40,7 @@ export function GroupsScreen({ householdId }: { householdId: string }) {
     setSubmitting(false)
 
     if (insertError) {
-      setError(
-        insertError.code === '23505'
-          ? 'A group with this name already exists'
-          : insertError.message,
-      )
+      setError(friendlyError(insertError, 'A group with this name already exists'))
       return
     }
 

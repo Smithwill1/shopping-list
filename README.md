@@ -58,4 +58,5 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 6 — Design system: Tailwind + shadcn/ui, every screen restyled
 - ✅ Phase 7 — Groups (meals): create, rename, add/remove items, reachable from the nav
 - ✅ Phase 8 — Groups on lists: add a whole group to a list, pre-selected with deselect/confirm (no new migration — reuses existing schema/RLS)
-- ⏳ Phase 9+ — validation & polish pass, PWA/realtime polish (see project plan)
+- ✅ Phase 9 — Validation & polish: shared validation/error-formatting helpers, fixed three silently-swallowed insert errors (no new migration)
+- ⏳ Phase 10 — PWA/realtime polish (see project plan)

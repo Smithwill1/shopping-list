@@ -15,6 +15,7 @@ import { useItems } from './useItems'
 import { ItemRow } from './ItemRow'
 import { validateItemName, validatePrice } from './validation'
 import { nextRank, rankBetween } from './rank'
+import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -54,11 +55,7 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
     setSubmitting(false)
 
     if (insertError) {
-      setError(
-        insertError.code === '23505'
-          ? 'An item with this name already exists'
-          : insertError.message,
-      )
+      setError(friendlyError(insertError, 'An item with this name already exists'))
       return
     }
 

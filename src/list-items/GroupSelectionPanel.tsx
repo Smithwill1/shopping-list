@@ -28,6 +28,7 @@ export function GroupSelectionPanel({
   const { session } = useAuth()
   const { groupItems, loading } = useGroupItems(groupId)
   const [deselected, setDeselected] = useState<Set<string>>(new Set())
+  const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   // Items already on the list aren't offered again — the same "no
@@ -50,7 +51,8 @@ export function GroupSelectionPanel({
     if (selectedItems.length === 0) return
 
     setSubmitting(true)
-    await supabase.from('list_items').insert(
+    setError(null)
+    const { error: insertError } = await supabase.from('list_items').insert(
       selectedItems.map((item) => ({
         list_id: listId,
         item_id: item.itemId,
@@ -58,6 +60,12 @@ export function GroupSelectionPanel({
       })),
     )
     setSubmitting(false)
+
+    if (insertError) {
+      setError('Could not add these items — try again')
+      return
+    }
+
     onConfirmed()
   }
 
@@ -93,6 +101,12 @@ export function GroupSelectionPanel({
               </div>
             ))}
           </div>
+        )}
+
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
         )}
 
         <div className="grid grid-cols-2 gap-2">

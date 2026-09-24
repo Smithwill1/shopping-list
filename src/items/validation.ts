@@ -1,6 +1,7 @@
+import { requireNonBlank } from '../lib/validation'
+
 export function validateItemName(name: string): string | null {
-  if (!name.trim()) return 'Item name is required'
-  return null
+  return requireNonBlank(name, 'Item name')
 }
 
 export function validatePrice(price: string): string | null {

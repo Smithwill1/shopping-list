@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
-import { validateNewItemName } from './validation'
+import { validateItemName } from '../items/validation'
 import { nextRank } from '../items/rank'
 import type { Item } from '../items/useItems'
 import { Button } from '@/components/ui/button'
@@ -28,7 +28,7 @@ export function QuickAddItem({
   async function addToListOnly(e: FormEvent) {
     e.preventDefault()
     setError(null)
-    const nameError = validateNewItemName(name)
+    const nameError = validateItemName(name)
     if (nameError) {
       setError(nameError)
       return
@@ -51,7 +51,7 @@ export function QuickAddItem({
 
   async function addAndSaveForLater() {
     setError(null)
-    const nameError = validateNewItemName(name)
+    const nameError = validateItemName(name)
     if (nameError) {
       setError(nameError)
       return
