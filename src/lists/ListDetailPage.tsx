@@ -6,6 +6,7 @@ import { useList } from './useList'
 import { useListItems } from '../list-items/useListItems'
 import { ListItemRow } from '../list-items/ListItemRow'
 import { AddFromCatalog } from '../list-items/AddFromCatalog'
+import { AddGroupToList } from '../list-items/AddGroupToList'
 import { QuickAddItem } from '../list-items/QuickAddItem'
 import { listTotal, trolleyTotal, unpricedCount } from '../list-items/totals'
 import { Button } from '@/components/ui/button'
@@ -108,6 +109,12 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
           refresh()
           refreshCatalog()
         }}
+      />
+      <AddGroupToList
+        householdId={householdId}
+        listId={listId}
+        listItems={listItems}
+        onAdded={refresh}
       />
       <AddFromCatalog
         listId={listId}

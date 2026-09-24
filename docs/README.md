@@ -11,6 +11,7 @@ This folder is a step-by-step build log of the shopping-list app: one document p
 - [Phase 5 — Items on lists](phase-05-list-items.md): adding items two ways, the check-off/swipe distinction, trolley/list totals, and "start next shop."
 - [Phase 6 — Design system](phase-06-design-system.md): Tailwind + shadcn/ui, the "iOS-Native Fresh" palette, and restyling every screen from Phases 1–5 without touching their logic.
 - [Phase 7 — Groups (meals)](phase-07-groups.md): the groups catalog, rename/add/remove-item management, and the first phase built styled from the start.
+- [Phase 8 — Groups on lists](phase-08-groups-on-lists.md): the pre-selected/deselect/confirm flow for adding a whole group to a list — zero new migrations, pure composition of existing RLS policies.
 - Later phases: added as they're built.
 
 ## How each doc is structured

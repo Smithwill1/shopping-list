@@ -56,5 +56,6 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 4 — Items catalog + drag-to-reorder ranking
 - ✅ Phase 5 — Items on lists: add (from catalog or new), check off, swipe to remove, trolley/list totals, "start next shop"
 - ✅ Phase 6 — Design system: Tailwind + shadcn/ui, every screen restyled
-- ✅ Phase 7 — Groups (meals): create, rename, add/remove items, reachable from the nav (code complete; run `0005_groups.sql` per "Supabase setup" above to activate)
-- ⏳ Phase 8+ — groups on lists, validation & polish pass, PWA/realtime polish (see project plan)
+- ✅ Phase 7 — Groups (meals): create, rename, add/remove items, reachable from the nav
+- ✅ Phase 8 — Groups on lists: add a whole group to a list, pre-selected with deselect/confirm (no new migration — reuses existing schema/RLS)
+- ⏳ Phase 9+ — validation & polish pass, PWA/realtime polish (see project plan)
