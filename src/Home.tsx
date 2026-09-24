@@ -27,7 +27,7 @@ export function Home({ household }: { household: Household }) {
 
       <Routes>
         <Route path="/" element={<ListsScreen householdId={household.id} />} />
-        <Route path="/lists/:id" element={<ListDetailPage />} />
+        <Route path="/lists/:id" element={<ListDetailPage householdId={household.id} />} />
         <Route path="/items" element={<ItemsScreen householdId={household.id} />} />
       </Routes>
 
