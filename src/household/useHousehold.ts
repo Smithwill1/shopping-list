@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { useAsyncData } from '../lib/useAsyncData'
 import { useAuth } from '../auth/useAuth'
 
 export interface Household {
@@ -20,30 +20,11 @@ async function fetchHousehold(userId: string): Promise<Household | null> {
 
 export function useHousehold() {
   const { session } = useAuth()
-  const [household, setHousehold] = useState<Household | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (!session) return
-
-    setLoading(true)
-    fetchHousehold(session.user.id).then((result) => {
-      setHousehold(result)
-      setLoading(false)
-    })
-  }, [session])
-
-  const refresh = useCallback(async () => {
-    if (!session) return
-    setLoading(true)
-    const result = await fetchHousehold(session.user.id)
-    setHousehold(result)
-    setLoading(false)
-  }, [session])
-
-  if (!session) {
-    return { household: null, loading: false, refresh }
-  }
+  const {
+    data: household,
+    loading,
+    refresh,
+  } = useAsyncData<Household | null>(session?.user.id ?? null, fetchHousehold, null)
 
   return { household, loading, refresh }
 }

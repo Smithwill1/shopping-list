@@ -7,6 +7,7 @@ This folder is a step-by-step build log of the shopping-list app: one document p
 - [Phase 1 — Project foundation](phase-01-foundation.md): Vite/React/TypeScript scaffold, PWA config, testing setup (Vitest + Playwright), linting/formatting, CI pipeline.
 - [Phase 2 — Auth & households](phase-02-auth-households.md): Supabase schema + Row Level Security, sign-in/sign-up, shared households, invite codes.
 - [Phase 3 — Lists screen](phase-03-lists.md): the lists table, client-side routing, the base "lists overview" screen and create-list form.
+- [Phase 4 — Items catalog](phase-04-items.md): the items table, fractional-index ranking, drag-to-reorder, and the shared `useAsyncData` hook.
 - Later phases: added as they're built.
 
 ## How each doc is structured

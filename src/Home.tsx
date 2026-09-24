@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
 import { supabase } from './lib/supabaseClient'
 import { InvitePanel } from './household/InvitePanel'
 import type { Household } from './household/useHousehold'
 import { ListsScreen } from './lists/ListsScreen'
 import { ListDetailPage } from './lists/ListDetailPage'
+import { ItemsScreen } from './items/ItemsScreen'
 
 export function Home({ household }: { household: Household }) {
   const [showInvite, setShowInvite] = useState(false)
@@ -19,9 +20,15 @@ export function Home({ household }: { household: Household }) {
       </header>
       <p>{household.name}</p>
 
+      <nav>
+        <Link to="/">Lists</Link>
+        <Link to="/items">Items</Link>
+      </nav>
+
       <Routes>
         <Route path="/" element={<ListsScreen householdId={household.id} />} />
         <Route path="/lists/:id" element={<ListDetailPage />} />
+        <Route path="/items" element={<ItemsScreen householdId={household.id} />} />
       </Routes>
 
       <button type="button" onClick={() => setShowInvite((visible) => !visible)}>

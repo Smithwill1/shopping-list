@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { useAsyncData } from '../lib/useAsyncData'
 
 export interface ShoppingList {
   id: string
@@ -18,23 +18,11 @@ async function fetchLists(householdId: string): Promise<ShoppingList[]> {
 }
 
 export function useLists(householdId: string) {
-  const [lists, setLists] = useState<ShoppingList[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setLoading(true)
-    fetchLists(householdId).then((result) => {
-      setLists(result)
-      setLoading(false)
-    })
-  }, [householdId])
-
-  const refresh = useCallback(async () => {
-    setLoading(true)
-    const result = await fetchLists(householdId)
-    setLists(result)
-    setLoading(false)
-  }, [householdId])
+  const {
+    data: lists,
+    loading,
+    refresh,
+  } = useAsyncData<ShoppingList[]>(householdId, fetchLists, [])
 
   return { lists, loading, refresh }
 }
