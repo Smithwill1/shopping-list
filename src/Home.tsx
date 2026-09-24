@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router-dom'
-import { ClipboardList, LogOut, ShoppingBasket, UserPlus } from 'lucide-react'
+import { ChefHat, ClipboardList, LogOut, ShoppingBasket, UserPlus } from 'lucide-react'
 import { supabase } from './lib/supabaseClient'
 import { Button } from '@/components/ui/button'
 import { cn } from 'cn'
@@ -9,10 +9,13 @@ import type { Household } from './household/useHousehold'
 import { ListsScreen } from './lists/ListsScreen'
 import { ListDetailPage } from './lists/ListDetailPage'
 import { ItemsScreen } from './items/ItemsScreen'
+import { GroupsScreen } from './groups/GroupsScreen'
+import { GroupDetailPage } from './groups/GroupDetailPage'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Lists', icon: ClipboardList },
   { to: '/items', label: 'Items', icon: ShoppingBasket },
+  { to: '/groups', label: 'Groups', icon: ChefHat },
 ]
 
 export function Home({ household }: { household: Household }) {
@@ -56,6 +59,8 @@ export function Home({ household }: { household: Household }) {
           <Route path="/" element={<ListsScreen householdId={household.id} />} />
           <Route path="/lists/:id" element={<ListDetailPage householdId={household.id} />} />
           <Route path="/items" element={<ItemsScreen householdId={household.id} />} />
+          <Route path="/groups" element={<GroupsScreen householdId={household.id} />} />
+          <Route path="/groups/:id" element={<GroupDetailPage householdId={household.id} />} />
         </Routes>
       </main>
 

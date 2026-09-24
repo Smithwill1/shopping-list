@@ -40,7 +40,7 @@ npm run dev
    VITE_SUPABASE_URL=
    VITE_SUPABASE_ANON_KEY=
    ```
-2. Run the migrations in `supabase/migrations/` **in order** via the Supabase SQL Editor: `0001_households.sql`, `0002_lists.sql`, `0003_items.sql`, then `0004_list_items.sql`.
+2. Run the migrations in `supabase/migrations/` **in order** via the Supabase SQL Editor: `0001_households.sql`, `0002_lists.sql`, `0003_items.sql`, `0004_list_items.sql`, then `0005_groups.sql`.
 3. For CI to build and run E2E tests, add the same two values as GitHub Actions repository secrets (**Settings → Secrets and variables → Actions**).
 
 ## Testing on an iPhone
@@ -56,4 +56,5 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 4 — Items catalog + drag-to-reorder ranking
 - ✅ Phase 5 — Items on lists: add (from catalog or new), check off, swipe to remove, trolley/list totals, "start next shop"
 - ✅ Phase 6 — Design system: Tailwind + shadcn/ui, every screen restyled
-- ⏳ Phase 7+ — groups/meals, validation & polish pass, PWA/realtime polish (see project plan)
+- ✅ Phase 7 — Groups (meals): create, rename, add/remove items, reachable from the nav (code complete; run `0005_groups.sql` per "Supabase setup" above to activate)
+- ⏳ Phase 8+ — groups on lists, validation & polish pass, PWA/realtime polish (see project plan)
