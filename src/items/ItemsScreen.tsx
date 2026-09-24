@@ -8,12 +8,19 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core'
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { Plus, ShoppingBasket } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
 import { useItems } from './useItems'
 import { ItemRow } from './ItemRow'
 import { validateItemName, validatePrice } from './validation'
 import { nextRank, rankBetween } from './rank'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
+import { PageLoading } from '@/components/PageLoading'
 
 export function ItemsScreen({ householdId }: { householdId: string }) {
   const { session } = useAuth()
@@ -84,24 +91,32 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
       })
   }
 
-  if (loading) return <p>Loading…</p>
+  if (loading) return <PageLoading />
 
   return (
-    <section>
+    <section className="flex flex-col gap-4">
       {items.length === 0 ? (
-        <div>
-          <p>No saved items yet.</p>
-          <button type="button" onClick={() => setShowForm(true)}>
+        <div className="flex flex-col items-center gap-3 py-12 text-center">
+          <ShoppingBasket className="size-10 text-muted-foreground" />
+          <p className="text-muted-foreground">No saved items yet.</p>
+          <Button type="button" onClick={() => setShowForm(true)}>
+            <Plus className="size-4" />
             Add a new item
-          </button>
+          </Button>
         </div>
       ) : (
         <>
-          <div>
-            <h2>Items</h2>
-            <button type="button" onClick={() => setShowForm((visible) => !visible)}>
-              + New item
-            </button>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Items</h2>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowForm((visible) => !visible)}
+            >
+              <Plus className="size-4" />
+              New item
+            </Button>
           </div>
           <DndContext
             sensors={sensors}
@@ -112,31 +127,48 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
               items={items.map((item) => item.id)}
               strategy={verticalListSortingStrategy}
             >
-              <ul>
-                {items.map((item) => (
-                  <ItemRow key={item.id} item={item} onSaved={refresh} />
-                ))}
-              </ul>
+              <Card>
+                <CardContent className="flex flex-col">
+                  {items.map((item, index) => (
+                    <div key={item.id}>
+                      {index > 0 && <Separator />}
+                      <ItemRow item={item} onSaved={refresh} />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </SortableContext>
           </DndContext>
         </>
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Item name
-            <input value={name} onChange={(e) => setName(e.target.value)} />
-          </label>
-          <label>
-            Rough price (optional)
-            <input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
-          </label>
-          {error && <p role="alert">{error}</p>}
-          <button type="submit" disabled={submitting}>
-            Add item
-          </button>
-        </form>
+        <Card>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <Label className="flex-col items-stretch gap-1.5">
+                Item name
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
+              </Label>
+              <Label className="flex-col items-stretch gap-1.5">
+                Rough price (optional)
+                <Input
+                  inputMode="decimal"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </Label>
+              {error && (
+                <p role="alert" className="text-sm text-destructive">
+                  {error}
+                </p>
+              )}
+              <Button type="submit" disabled={submitting}>
+                Add item
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       )}
     </section>
   )

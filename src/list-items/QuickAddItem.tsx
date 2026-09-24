@@ -4,6 +4,10 @@ import { useAuth } from '../auth/useAuth'
 import { validateNewItemName } from './validation'
 import { nextRank } from '../items/rank'
 import type { Item } from '../items/useItems'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export function QuickAddItem({
   householdId,
@@ -106,22 +110,37 @@ export function QuickAddItem({
   }
 
   return (
-    <form onSubmit={addToListOnly}>
-      <label>
-        Add an item
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Type an item name…"
-        />
-      </label>
-      {error && <p role="alert">{error}</p>}
-      <button type="submit" disabled={submitting}>
-        Add to list
-      </button>
-      <button type="button" onClick={addAndSaveForLater} disabled={submitting}>
-        Add + save for later
-      </button>
-    </form>
+    <Card>
+      <CardContent>
+        <form onSubmit={addToListOnly} className="flex flex-col gap-3">
+          <Label className="flex-col items-stretch gap-1.5">
+            Add an item
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Type an item name…"
+            />
+          </Label>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-2">
+            <Button type="submit" disabled={submitting}>
+              Add to list
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={addAndSaveForLater}
+              disabled={submitting}
+            >
+              Add + save for later
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   )
 }

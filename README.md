@@ -5,6 +5,7 @@ A shared, mobile-first shopping list PWA for two accounts to manage together —
 ## Stack
 
 - **React + TypeScript + Vite** — app shell
+- **Tailwind CSS + shadcn/ui** — styling and UI primitives ("iOS-Native Fresh" theme)
 - **Supabase** — auth, database, realtime sync (added in Phase 2)
 - **vite-plugin-pwa** — installable, offline-capable PWA
 - **Vitest + React Testing Library** — unit/component tests
@@ -53,5 +54,6 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 2 — Supabase auth + household/sharing model
 - ✅ Phase 3 — Lists screen + routing
 - ✅ Phase 4 — Items catalog + drag-to-reorder ranking
-- ✅ Phase 5 — Items on lists: add (from catalog or new), check off, swipe to remove, trolley/list totals, "start next shop" (code complete; run `0004_list_items.sql` per "Supabase setup" above to activate)
-- ⏳ Phase 6+ — groups/meals, validation & polish pass, PWA/realtime polish (see project plan)
+- ✅ Phase 5 — Items on lists: add (from catalog or new), check off, swipe to remove, trolley/list totals, "start next shop"
+- ✅ Phase 6 — Design system: Tailwind + shadcn/ui, every screen restyled
+- ⏳ Phase 7+ — groups/meals, validation & polish pass, PWA/realtime polish (see project plan)

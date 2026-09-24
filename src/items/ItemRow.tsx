@@ -1,13 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { GripVertical, Pencil } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { validateItemName, validatePrice } from './validation'
 import type { Item } from './useItems'
-
-function formatPrice(price: number | null): string | null {
-  return price === null ? null : `$${price.toFixed(2)}`
-}
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export function ItemRow({ item, onSaved }: { item: Item; onSaved: () => void }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id })
@@ -51,38 +51,58 @@ export function ItemRow({ item, onSaved }: { item: Item; onSaved: () => void }) 
 
   if (editing) {
     return (
-      <li ref={setNodeRef} style={style}>
-        <form onSubmit={handleSubmit}>
-          <label>
+      <div ref={setNodeRef} style={style} className="py-3">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <Label className="flex-col items-stretch gap-1.5">
             Item name
-            <input value={name} onChange={(e) => setName(e.target.value)} />
-          </label>
-          <label>
+            <Input value={name} onChange={(e) => setName(e.target.value)} />
+          </Label>
+          <Label className="flex-col items-stretch gap-1.5">
             Rough price (optional)
-            <input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
-          </label>
-          {error && <p role="alert">{error}</p>}
-          <button type="submit" disabled={submitting}>
-            Save
-          </button>
-          <button type="button" onClick={() => setEditing(false)}>
-            Cancel
-          </button>
+            <Input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
+          </Label>
+          {error && (
+            <p role="alert" className="text-sm text-destructive">
+              {error}
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-2">
+            <Button type="submit" disabled={submitting}>
+              Save
+            </Button>
+            <Button type="button" variant="outline" onClick={() => setEditing(false)}>
+              Cancel
+            </Button>
+          </div>
         </form>
-      </li>
+      </div>
     )
   }
 
   return (
-    <li ref={setNodeRef} style={style}>
-      <span {...attributes} {...listeners} aria-label={`Drag to reorder ${item.name}`}>
-        ⠿
-      </span>
-      <span>{item.name}</span>
-      {item.price !== null && <span>{formatPrice(item.price)}</span>}
-      <button type="button" onClick={() => setEditing(true)}>
-        Edit
+    <div ref={setNodeRef} style={style} className="flex items-center gap-3 py-3">
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag to reorder ${item.name}`}
+        className="cursor-grab touch-none text-muted-foreground active:cursor-grabbing"
+      >
+        <GripVertical className="size-4" />
       </button>
-    </li>
+      <span className="flex-1">{item.name}</span>
+      {item.price !== null && (
+        <span className="text-sm tabular-nums text-muted-foreground">${item.price.toFixed(2)}</span>
+      )}
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        aria-label={`Edit ${item.name}`}
+        onClick={() => setEditing(true)}
+      >
+        <Pencil className="size-4" />
+      </Button>
+    </div>
   )
 }

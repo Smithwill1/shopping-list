@@ -1,7 +1,11 @@
+import { Plus } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
 import type { Item } from '../items/useItems'
 import type { ListItem } from './useListItems'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 export function AddFromCatalog({
   listId,
@@ -28,18 +32,24 @@ export function AddFromCatalog({
   if (available.length === 0) return null
 
   return (
-    <section>
-      <h3>Add from your items</h3>
-      <ul>
-        {available.map((item) => (
-          <li key={item.id}>
-            <span>{item.name}</span>
-            <button type="button" onClick={() => addItem(item.id)}>
-              Add
-            </button>
-          </li>
+    <Card>
+      <CardHeader>
+        <h3 className="text-base font-medium leading-snug">Add from your items</h3>
+      </CardHeader>
+      <CardContent className="flex flex-col">
+        {available.map((item, index) => (
+          <div key={item.id}>
+            {index > 0 && <Separator />}
+            <div className="flex items-center justify-between gap-3 py-2">
+              <span>{item.name}</span>
+              <Button type="button" variant="ghost" size="sm" onClick={() => addItem(item.id)}>
+                <Plus className="size-4" />
+                Add
+              </Button>
+            </div>
+          </div>
         ))}
-      </ul>
-    </section>
+      </CardContent>
+    </Card>
   )
 }

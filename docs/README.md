@@ -9,6 +9,7 @@ This folder is a step-by-step build log of the shopping-list app: one document p
 - [Phase 3 — Lists screen](phase-03-lists.md): the lists table, client-side routing, the base "lists overview" screen and create-list form.
 - [Phase 4 — Items catalog](phase-04-items.md): the items table, fractional-index ranking, drag-to-reorder, and the shared `useAsyncData` hook.
 - [Phase 5 — Items on lists](phase-05-list-items.md): adding items two ways, the check-off/swipe distinction, trolley/list totals, and "start next shop."
+- [Phase 6 — Design system](phase-06-design-system.md): Tailwind + shadcn/ui, the "iOS-Native Fresh" palette, and restyling every screen from Phases 1–5 without touching their logic.
 - Later phases: added as they're built.
 
 ## How each doc is structured

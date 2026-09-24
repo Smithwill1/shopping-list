@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom'
+import { RotateCcw } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useItems } from '../items/useItems'
 import { useList } from './useList'
@@ -7,6 +8,10 @@ import { ListItemRow } from '../list-items/ListItemRow'
 import { AddFromCatalog } from '../list-items/AddFromCatalog'
 import { QuickAddItem } from '../list-items/QuickAddItem'
 import { listTotal, trolleyTotal, unpricedCount } from '../list-items/totals'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { PageLoading } from '@/components/PageLoading'
 
 export function ListDetailPage({ householdId }: { householdId: string }) {
   const { id } = useParams()
@@ -16,8 +21,8 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   const { items: catalogItems, refresh: refreshCatalog } = useItems(householdId)
   const { listItems, loading, refresh, setListItems } = useListItems(listId)
 
-  if (listLoading || loading) return <p>Loading…</p>
-  if (!list) return <p>List not found.</p>
+  if (listLoading || loading) return <PageLoading />
+  if (!list) return <p className="py-12 text-center text-muted-foreground">List not found.</p>
 
   function toggleDone(itemId: string, done: boolean) {
     setListItems(listItems.map((item) => (item.id === itemId ? { ...item, done } : item)))
@@ -55,24 +60,45 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   const unpriced = unpricedCount(listItems)
 
   return (
-    <section>
-      <h2>{list.name}</h2>
-      {list.description && <p>{list.description}</p>}
+    <section className="flex flex-col gap-4">
+      <div>
+        <h2 className="text-xl font-bold tracking-tight">{list.name}</h2>
+        {list.description && <p className="text-sm text-muted-foreground">{list.description}</p>}
+      </div>
 
-      <p>
-        Total: ${total.toFixed(2)}
-        {unpriced > 0 && ` (+${unpriced} unpriced)`}
-      </p>
-      <p>In trolley: ${inTrolley.toFixed(2)}</p>
-      <button type="button" onClick={startNextShop}>
+      <div className="grid grid-cols-2 gap-3">
+        <Card>
+          <CardContent className="text-center">
+            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="text-2xl font-bold tabular-nums">${total.toFixed(2)}</p>
+            {unpriced > 0 && <p className="text-xs text-muted-foreground">+{unpriced} unpriced</p>}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="text-center">
+            <p className="text-xs text-muted-foreground">In trolley</p>
+            <p className="text-2xl font-bold tabular-nums text-primary">${inTrolley.toFixed(2)}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Button type="button" variant="outline" onClick={startNextShop}>
+        <RotateCcw className="size-4" />
         Start next shop
-      </button>
+      </Button>
 
-      <ul>
-        {listItems.map((item) => (
-          <ListItemRow key={item.id} item={item} onToggle={toggleDone} onRemove={removeItem} />
-        ))}
-      </ul>
+      {listItems.length > 0 && (
+        <Card>
+          <CardContent className="flex flex-col">
+            {listItems.map((item, index) => (
+              <div key={item.id}>
+                {index > 0 && <Separator />}
+                <ListItemRow item={item} onToggle={toggleDone} onRemove={removeItem} />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       <QuickAddItem
         householdId={householdId}

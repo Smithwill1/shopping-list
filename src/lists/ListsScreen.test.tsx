@@ -53,7 +53,7 @@ describe('ListsScreen', () => {
     renderScreen()
 
     expect(await screen.findByText('Groceries')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /\+ new list/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /new list/i })).toBeInTheDocument()
   })
 
   it('shows a validation error instead of submitting when the name is blank', async () => {
