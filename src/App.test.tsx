@@ -1,10 +1,21 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
+vi.mock('./lib/supabaseClient', () => ({
+  supabase: {
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      onAuthStateChange: vi
+        .fn()
+        .mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
+  },
+}))
+
 describe('App', () => {
-  it('renders the app heading', () => {
+  it('shows the sign-in screen when there is no session', async () => {
     render(<App />)
-    expect(screen.getByRole('heading', { name: /shopping list/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /sign in/i })).toBeInTheDocument()
   })
 })

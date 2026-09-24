@@ -21,27 +21,26 @@ npm run dev
 
 ## Scripts
 
-| Command               | Does what                                  |
-| ---------------------- | ------------------------------------------- |
-| `npm run dev`          | Start the Vite dev server                   |
-| `npm run build`        | Typecheck + production build                |
-| `npm run lint`         | oxlint                                       |
-| `npm run format`       | Prettier, writes changes                    |
-| `npm run format:check` | Prettier, check only (used in CI)           |
-| `npm test`             | Vitest unit/component tests                 |
-| `npm run test:watch`   | Vitest in watch mode                        |
-| `npm run e2e`          | Playwright end-to-end tests                 |
+| Command                | Does what                         |
+| ---------------------- | --------------------------------- |
+| `npm run dev`          | Start the Vite dev server         |
+| `npm run build`        | Typecheck + production build      |
+| `npm run lint`         | oxlint                            |
+| `npm run format`       | Prettier, writes changes          |
+| `npm run format:check` | Prettier, check only (used in CI) |
+| `npm test`             | Vitest unit/component tests       |
+| `npm run test:watch`   | Vitest in watch mode              |
+| `npm run e2e`          | Playwright end-to-end tests       |
 
 ## Supabase setup
 
-The app expects a Supabase project. Copy `.env.example` to `.env.local` and fill in:
-
-```
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-```
-
-(Project not yet created — this lands in Phase 2 along with auth and household/sharing.)
+1. Create a Supabase project, then copy `.env.example` to `.env.local` and fill in the **Project URL** and **anon key** (Project Settings → API):
+   ```
+   VITE_SUPABASE_URL=
+   VITE_SUPABASE_ANON_KEY=
+   ```
+2. Run `supabase/migrations/0001_households.sql` in the Supabase SQL Editor — creates the households/membership/invite schema and its Row Level Security policies.
+3. For CI to build and run E2E tests, add the same two values as GitHub Actions repository secrets (**Settings → Secrets and variables → Actions**).
 
 ## Testing on an iPhone
 
@@ -51,5 +50,5 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 ## Build status
 
 - ✅ Phase 1 — Vite/React/TS scaffold, PWA config, testing (Vitest + Playwright), CI pipeline
-- ⏳ Phase 2 — Supabase auth + household/sharing model
+- ✅ Phase 2 — Supabase auth + household/sharing model (code complete; run the migration and add CI secrets per "Supabase setup" above to activate)
 - ⏳ Phase 3+ — lists, items, groups, drag-to-rank, trolley totals (see project plan)

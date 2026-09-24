@@ -1,11 +1,11 @@
 # Project documentation
 
-This folder is a step-by-step build log of the shopping-list app: one document per phase, written to be re-readable later as both a personal reference and a portfolio piece. Each phase document explains not just *what* was built, but *why* each piece exists — the goal is that you could rebuild the phase from the doc alone, and explain any file in it in an interview.
+This folder is a step-by-step build log of the shopping-list app: one document per phase, written to be re-readable later as both a personal reference and a portfolio piece. Each phase document explains not just _what_ was built, but _why_ each piece exists — the goal is that you could rebuild the phase from the doc alone, and explain any file in it in an interview.
 
 ## Phases
 
 - [Phase 1 — Project foundation](phase-01-foundation.md): Vite/React/TypeScript scaffold, PWA config, testing setup (Vitest + Playwright), linting/formatting, CI pipeline.
-- Phase 2 — Auth & households: not yet written.
+- [Phase 2 — Auth & households](phase-02-auth-households.md): Supabase schema + Row Level Security, sign-in/sign-up, shared households, invite codes.
 - Later phases: added as they're built.
 
 ## How each doc is structured
