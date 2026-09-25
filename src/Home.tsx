@@ -54,7 +54,7 @@ export function Home({ household }: { household: Household }) {
         </div>
       )}
 
-      <main className="flex-1 pt-4 pb-24">
+      <main className="flex-1 pt-4 pb-36">
         <Routes>
           <Route path="/" element={<ListsScreen householdId={household.id} />} />
           <Route path="/lists/:id" element={<ListDetailPage householdId={household.id} />} />

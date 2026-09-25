@@ -14,8 +14,9 @@ This folder is a step-by-step build log of the shopping-list app: one document p
 - [Phase 8 — Groups on lists](phase-08-groups-on-lists.md): the pre-selected/deselect/confirm flow for adding a whole group to a list — zero new migrations, pure composition of existing RLS policies.
 - [Phase 9 — Validation & polish](phase-09-validation-polish.md): an audit across every form — shared validation/error-formatting helpers, and fixing three "Add" actions that silently swallowed insert errors.
 - [Phase 10 — PWA & realtime polish](phase-10-pwa-realtime.md): Supabase Realtime on lists/list_items, an offline indicator, a real hang-forever bug fixed in `useAsyncData`, and deploy guidance. The last phase in the original plan.
+- [Phase 11 — Floating add button & modal forms](phase-11-floating-add-button.md): the first post-launch fix — a floating "+" replacing the old scroll-to-the-top/scroll-to-the-bottom add flow on Lists, Items, and Groups, with a proper modal dialog instead of an inline form.
 
-This is the full build log — every phase in the original plan is documented above.
+Phases 1–10 are the original plan, in order. Later phases are ongoing iteration — real usage surfacing real fixes — documented the same way.
 
 ## How each doc is structured
 

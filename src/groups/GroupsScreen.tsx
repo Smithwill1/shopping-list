@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ChefHat, ChevronRight, Plus } from 'lucide-react'
+import { ChefHat, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
 import { useGroups } from './useGroups'
@@ -8,18 +8,28 @@ import { validateGroupName } from './validation'
 import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { PageLoading } from '@/components/PageLoading'
+import { FloatingAddButton } from '@/components/FloatingAddButton'
 
 export function GroupsScreen({ householdId }: { householdId: string }) {
   const { session } = useAuth()
   const { groups, loading, refresh } = useGroups(householdId)
-  const [showForm, setShowForm] = useState(false)
+  const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen)
+    if (!nextOpen) {
+      setName('')
+      setError(null)
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -44,8 +54,7 @@ export function GroupsScreen({ householdId }: { householdId: string }) {
       return
     }
 
-    setName('')
-    setShowForm(false)
+    handleOpenChange(false)
     refresh()
   }
 
@@ -57,25 +66,11 @@ export function GroupsScreen({ householdId }: { householdId: string }) {
         <div className="flex flex-col items-center gap-3 py-12 text-center">
           <ChefHat className="size-10 text-muted-foreground" />
           <p className="text-muted-foreground">No groups yet.</p>
-          <Button type="button" onClick={() => setShowForm(true)}>
-            <Plus className="size-4" />
-            Create your first group
-          </Button>
+          <p className="text-sm text-muted-foreground">Tap + to create one.</p>
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Groups</h2>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowForm((visible) => !visible)}
-            >
-              <Plus className="size-4" />
-              New group
-            </Button>
-          </div>
+          <h2 className="text-lg font-semibold">Groups</h2>
           <Card>
             <CardContent className="flex flex-col">
               {groups.map((group, index) => (
@@ -95,26 +90,29 @@ export function GroupsScreen({ householdId }: { householdId: string }) {
         </>
       )}
 
-      {showForm && (
-        <Card>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <Label className="flex-col items-stretch gap-1.5">
-                Group name
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
-              </Label>
-              {error && (
-                <p role="alert" className="text-sm text-destructive">
-                  {error}
-                </p>
-              )}
-              <Button type="submit" disabled={submitting}>
-                Create
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      )}
+      <FloatingAddButton label="Add a new group" onClick={() => setOpen(true)} />
+
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add a new group</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Label className="flex-col items-stretch gap-1.5">
+              Group name
+              <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+            </Label>
+            {error && (
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
+            )}
+            <Button type="submit" disabled={submitting}>
+              Create
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }

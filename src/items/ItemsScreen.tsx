@@ -8,7 +8,7 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core'
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { Plus, ShoppingBasket } from 'lucide-react'
+import { ShoppingBasket } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../auth/useAuth'
 import { useItems } from './useItems'
@@ -18,21 +18,32 @@ import { nextRank, rankBetween } from './rank'
 import { friendlyError } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { PageLoading } from '@/components/PageLoading'
+import { FloatingAddButton } from '@/components/FloatingAddButton'
 
 export function ItemsScreen({ householdId }: { householdId: string }) {
   const { session } = useAuth()
   const { items, loading, refresh, setItems } = useItems(householdId)
-  const [showForm, setShowForm] = useState(false)
+  const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen)
+    if (!nextOpen) {
+      setName('')
+      setPrice('')
+      setError(null)
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -59,9 +70,7 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
       return
     }
 
-    setName('')
-    setPrice('')
-    setShowForm(false)
+    handleOpenChange(false)
     refresh()
   }
 
@@ -96,25 +105,11 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
         <div className="flex flex-col items-center gap-3 py-12 text-center">
           <ShoppingBasket className="size-10 text-muted-foreground" />
           <p className="text-muted-foreground">No saved items yet.</p>
-          <Button type="button" onClick={() => setShowForm(true)}>
-            <Plus className="size-4" />
-            Add a new item
-          </Button>
+          <p className="text-sm text-muted-foreground">Tap + to add one.</p>
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Items</h2>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setShowForm((visible) => !visible)}
-            >
-              <Plus className="size-4" />
-              New item
-            </Button>
-          </div>
+          <h2 className="text-lg font-semibold">Items</h2>
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -139,34 +134,33 @@ export function ItemsScreen({ householdId }: { householdId: string }) {
         </>
       )}
 
-      {showForm && (
-        <Card>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <Label className="flex-col items-stretch gap-1.5">
-                Item name
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
-              </Label>
-              <Label className="flex-col items-stretch gap-1.5">
-                Rough price (optional)
-                <Input
-                  inputMode="decimal"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </Label>
-              {error && (
-                <p role="alert" className="text-sm text-destructive">
-                  {error}
-                </p>
-              )}
-              <Button type="submit" disabled={submitting}>
-                Add item
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      )}
+      <FloatingAddButton label="Add a new item" onClick={() => setOpen(true)} />
+
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add a new item</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Label className="flex-col items-stretch gap-1.5">
+              Item name
+              <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+            </Label>
+            <Label className="flex-col items-stretch gap-1.5">
+              Rough price (optional)
+              <Input inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} />
+            </Label>
+            {error && (
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
+            )}
+            <Button type="submit" disabled={submitting}>
+              Add item
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }

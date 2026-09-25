@@ -60,8 +60,9 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 8 — Groups on lists: add a whole group to a list, pre-selected with deselect/confirm (no new migration — reuses existing schema/RLS)
 - ✅ Phase 9 — Validation & polish: shared validation/error-formatting helpers, fixed three silently-swallowed insert errors (no new migration)
 - ✅ Phase 10 — PWA & realtime polish: live sync on lists/list_items, an offline indicator, a real bug fix in `useAsyncData` (run `0006_realtime.sql` per "Supabase setup" above to activate) — **deploy to Vercel/Netlify still needed, see below**
+- ✅ Phase 11 — Floating add button & modal forms: replaced the scroll-to-add flow on Lists/Items/Groups with a persistent floating "+" and a modal dialog
 
-This closes out every phase in the original plan.
+Phases 1–10 close out the original plan; later phases are ongoing post-launch iteration.
 
 ## Deploying (not yet done)
 
