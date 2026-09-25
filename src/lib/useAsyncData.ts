@@ -22,18 +22,31 @@ export function useAsyncData<T>(
     if (key === null) return
 
     setLoading(true)
-    fetcherRef.current(key).then((result) => {
-      setData(result)
-      setLoading(false)
-    })
+    fetcherRef
+      .current(key)
+      .then((result) => {
+        setData(result)
+      })
+      .catch(() => {
+        // A rejected fetch (e.g. offline) still has to stop the spinner —
+        // the OfflineBanner is what tells the user why, not this hook.
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }, [key])
 
   const refresh = useCallback(async () => {
     if (key === null) return
     setLoading(true)
-    const result = await fetcherRef.current(key)
-    setData(result)
-    setLoading(false)
+    try {
+      const result = await fetcherRef.current(key)
+      setData(result)
+    } catch {
+      // Same reasoning as above — stop loading, leave the last-known data.
+    } finally {
+      setLoading(false)
+    }
   }, [key])
 
   return { data, loading, refresh, setData }

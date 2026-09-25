@@ -6,9 +6,19 @@ import { ListsScreen } from './ListsScreen'
 const mockSelect = vi.fn()
 const mockInsert = vi.fn()
 
+function fakeChannel() {
+  const channel = {
+    on: vi.fn(() => channel),
+    subscribe: vi.fn(() => channel),
+  }
+  return channel
+}
+
 vi.mock('../lib/supabaseClient', () => ({
   supabase: {
     from: vi.fn(() => ({ select: mockSelect, insert: mockInsert })),
+    channel: vi.fn(() => fakeChannel()),
+    removeChannel: vi.fn(),
   },
 }))
 

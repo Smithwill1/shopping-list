@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient'
 import { useAsyncData } from '../lib/useAsyncData'
+import { useRealtimeRefresh } from '../lib/useRealtimeRefresh'
 
 export interface ListItem {
   id: string
@@ -50,6 +51,8 @@ export function useListItems(listId: string) {
     refresh,
     setData: setListItems,
   } = useAsyncData<ListItem[]>(listId, fetchListItems, [])
+
+  useRealtimeRefresh('list_items', `list_id=eq.${listId}`, refresh)
 
   return { listItems, loading, refresh, setListItems }
 }

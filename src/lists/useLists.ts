@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient'
 import { useAsyncData } from '../lib/useAsyncData'
+import { useRealtimeRefresh } from '../lib/useRealtimeRefresh'
 
 export interface ShoppingList {
   id: string
@@ -23,6 +24,8 @@ export function useLists(householdId: string) {
     loading,
     refresh,
   } = useAsyncData<ShoppingList[]>(householdId, fetchLists, [])
+
+  useRealtimeRefresh('lists', `household_id=eq.${householdId}`, refresh)
 
   return { lists, loading, refresh }
 }

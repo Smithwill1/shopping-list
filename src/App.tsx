@@ -6,6 +6,7 @@ import { useHousehold } from './household/useHousehold'
 import { CreateOrJoinHousehold } from './household/CreateOrJoinHousehold'
 import { Home } from './Home'
 import { PageLoading } from './components/PageLoading'
+import { OfflineBanner } from './components/OfflineBanner'
 
 function AppRoutes() {
   const { session, loading: authLoading } = useAuth()
@@ -22,6 +23,7 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
+      <OfflineBanner />
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>
