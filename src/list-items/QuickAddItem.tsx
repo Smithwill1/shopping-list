@@ -110,37 +110,41 @@ export function QuickAddItem({
   }
 
   return (
-    <Card>
-      <CardContent>
-        <form onSubmit={addToListOnly} className="flex flex-col gap-3">
-          <Label className="flex-col items-stretch gap-1.5">
-            Add an item
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Type an item name…"
-            />
-          </Label>
-          {error && (
-            <p role="alert" className="text-sm text-destructive">
-              {error}
-            </p>
-          )}
-          <div className="grid grid-cols-2 gap-2">
-            <Button type="submit" disabled={submitting}>
-              Add to list
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={addAndSaveForLater}
-              disabled={submitting}
-            >
-              Add + save for later
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20">
+      <div className="mx-auto max-w-[480px] px-4">
+        <Card className="shadow-lg">
+          <CardContent>
+            <form onSubmit={addToListOnly} className="flex flex-col gap-3">
+              <Label className="flex-col items-stretch gap-1.5">
+                Add an item
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Type an item name…"
+                />
+              </Label>
+              {error && (
+                <p role="alert" className="text-sm text-destructive">
+                  {error}
+                </p>
+              )}
+              <div className="grid grid-cols-2 gap-2">
+                <Button type="submit" disabled={submitting}>
+                  Add to list
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addAndSaveForLater}
+                  disabled={submitting}
+                >
+                  Add + save for later
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }

@@ -47,6 +47,17 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
       })
   }
 
+  function updateQuantity(itemId: string, quantity: number) {
+    setListItems(listItems.map((item) => (item.id === itemId ? { ...item, quantity } : item)))
+    supabase
+      .from('list_items')
+      .update({ quantity })
+      .eq('id', itemId)
+      .then(({ error }) => {
+        if (error) refresh()
+      })
+  }
+
   async function startNextShop() {
     setListItems(listItems.map((item) => ({ ...item, done: false })))
     const { error } = await supabase
@@ -61,7 +72,7 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   const unpriced = unpricedCount(listItems)
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4 pb-56">
       <div>
         <h2 className="text-xl font-bold tracking-tight">{list.name}</h2>
         {list.description && <p className="text-sm text-muted-foreground">{list.description}</p>}
@@ -94,12 +105,30 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
             {listItems.map((item, index) => (
               <div key={item.id}>
                 {index > 0 && <Separator />}
-                <ListItemRow item={item} onToggle={toggleDone} onRemove={removeItem} />
+                <ListItemRow
+                  item={item}
+                  onToggle={toggleDone}
+                  onRemove={removeItem}
+                  onQuantityChange={updateQuantity}
+                />
               </div>
             ))}
           </CardContent>
         </Card>
       )}
+
+      <AddFromCatalog
+        listId={listId}
+        catalogItems={catalogItems}
+        listItems={listItems}
+        onAdded={refresh}
+      />
+      <AddGroupToList
+        householdId={householdId}
+        listId={listId}
+        listItems={listItems}
+        onAdded={refresh}
+      />
 
       <QuickAddItem
         householdId={householdId}
@@ -109,18 +138,6 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
           refresh()
           refreshCatalog()
         }}
-      />
-      <AddGroupToList
-        householdId={householdId}
-        listId={listId}
-        listItems={listItems}
-        onAdded={refresh}
-      />
-      <AddFromCatalog
-        listId={listId}
-        catalogItems={catalogItems}
-        listItems={listItems}
-        onAdded={refresh}
       />
     </section>
   )

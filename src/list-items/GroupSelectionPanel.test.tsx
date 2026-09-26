@@ -65,6 +65,7 @@ describe('GroupSelectionPanel', () => {
             price: 3,
             rank: 1000,
             done: false,
+            quantity: 1,
           },
         ]}
         onCancel={vi.fn()}

@@ -9,6 +9,7 @@ export interface ListItem {
   price: number | null
   rank: number | null
   done: boolean
+  quantity: number
 }
 
 interface RawListItem {
@@ -17,13 +18,14 @@ interface RawListItem {
   name: string | null
   price: number | null
   done: boolean
+  quantity: number
   items: { name: string; price: number | null; rank: number } | null
 }
 
 async function fetchListItems(listId: string): Promise<ListItem[]> {
   const { data } = await supabase
     .from('list_items')
-    .select('id, item_id, name, price, done, items(name, price, rank)')
+    .select('id, item_id, name, price, done, quantity, items(name, price, rank)')
     .eq('list_id', listId)
     .order('created_at', { ascending: true })
 
@@ -39,6 +41,7 @@ async function fetchListItems(listId: string): Promise<ListItem[]> {
     price: row.items?.price ?? row.price,
     rank: row.items?.rank ?? null,
     done: row.done,
+    quantity: row.quantity,
   }))
 
   return resolved.sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity))
