@@ -22,6 +22,18 @@ interface RawListItem {
   items: { name: string; price: number | null; rank: number } | null
 }
 
+// Checked-off items sink below everything still unchecked, so the item
+// you're standing in front of in-store is always near the top — and
+// within each of those two groups, order is still by rank. Unchecking an
+// item is symmetric: it just moves back into rank order among the
+// unchecked group, nothing about its rank itself ever changes.
+export function sortListItems(items: ListItem[]): ListItem[] {
+  return [...items].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1
+    return (a.rank ?? Infinity) - (b.rank ?? Infinity)
+  })
+}
+
 async function fetchListItems(listId: string): Promise<ListItem[]> {
   const { data } = await supabase
     .from('list_items')
@@ -44,7 +56,7 @@ async function fetchListItems(listId: string): Promise<ListItem[]> {
     quantity: row.quantity,
   }))
 
-  return resolved.sort((a, b) => (a.rank ?? Infinity) - (b.rank ?? Infinity))
+  return sortListItems(resolved)
 }
 
 export function useListItems(listId: string) {

@@ -16,6 +16,7 @@ This folder is a step-by-step build log of the shopping-list app: one document p
 - [Phase 10 — PWA & realtime polish](phase-10-pwa-realtime.md): Supabase Realtime on lists/list_items, an offline indicator, a real hang-forever bug fixed in `useAsyncData`, and deploy guidance. The last phase in the original plan.
 - [Phase 11 — Floating add button & modal forms](phase-11-floating-add-button.md): the first post-launch fix — a floating "+" replacing the old scroll-to-the-top/scroll-to-the-bottom add flow on Lists, Items, and Groups, with a proper modal dialog instead of an inline form.
 - [Phase 12 — Multi-select catalog modal & item quantities](phase-12-item-quantities.md): a real `quantity` column on list items, a multi-select-with-quantity modal for adding from the catalog in bulk, and a fixed quick-add bar on the list-detail screen.
+- [Phase 13 — Sink-to-bottom sorting, combined fixed stack, keyboard fix](phase-13-list-detail-polish.md): checked-off items sort below unchecked ones, "Add from your items" joins the quick-add bar in one fixed stack, and every dialog anchors near the top so the keyboard can't cover it.
 
 Phases 1–10 are the original plan, in order. Later phases are ongoing iteration — real usage surfacing real fixes — documented the same way.
 

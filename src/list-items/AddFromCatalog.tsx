@@ -91,7 +91,12 @@ export function AddFromCatalog({
 
   return (
     <>
-      <Button type="button" variant="outline" onClick={() => setOpen(true)}>
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full shadow-lg"
+        onClick={() => setOpen(true)}
+      >
         Add from your items
       </Button>
 

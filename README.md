@@ -62,6 +62,7 @@ deploy to a free static host (Vercel/Netlify), open the URL in Safari on iPhone,
 - ✅ Phase 10 — PWA & realtime polish: live sync on lists/list_items, an offline indicator, a real bug fix in `useAsyncData` (run `0006_realtime.sql` per "Supabase setup" above to activate)
 - ✅ Phase 11 — Floating add button & modal forms: replaced the scroll-to-add flow on Lists/Items/Groups with a persistent floating "+" and a modal dialog
 - ✅ Phase 12 — Multi-select catalog modal & item quantities: bulk-add items with quantities from a modal, a `−`/`+` stepper on every list item, a fixed quick-add bar (run `0007_list_item_quantity.sql` per "Supabase setup" above to activate)
+- ✅ Phase 13 — Sink-to-bottom sorting, combined fixed stack, keyboard fix: checked items sort to the bottom, "Add from your items" and the quick-add bar now stack together as one fixed unit, dialogs anchor near the top so the keyboard can't cover them (no new migration)
 
 Phases 1–10 close out the original plan; later phases are ongoing post-launch iteration.
 

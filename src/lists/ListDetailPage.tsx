@@ -3,7 +3,7 @@ import { RotateCcw } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import { useItems } from '../items/useItems'
 import { useList } from './useList'
-import { useListItems } from '../list-items/useListItems'
+import { sortListItems, useListItems } from '../list-items/useListItems'
 import { ListItemRow } from '../list-items/ListItemRow'
 import { AddFromCatalog } from '../list-items/AddFromCatalog'
 import { AddGroupToList } from '../list-items/AddGroupToList'
@@ -26,7 +26,9 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   if (!list) return <p className="py-12 text-center text-muted-foreground">List not found.</p>
 
   function toggleDone(itemId: string, done: boolean) {
-    setListItems(listItems.map((item) => (item.id === itemId ? { ...item, done } : item)))
+    setListItems(
+      sortListItems(listItems.map((item) => (item.id === itemId ? { ...item, done } : item))),
+    )
     supabase
       .from('list_items')
       .update({ done })
@@ -59,7 +61,7 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   }
 
   async function startNextShop() {
-    setListItems(listItems.map((item) => ({ ...item, done: false })))
+    setListItems(sortListItems(listItems.map((item) => ({ ...item, done: false }))))
     const { error } = await supabase
       .from('list_items')
       .update({ done: false })
@@ -72,7 +74,7 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
   const unpriced = unpricedCount(listItems)
 
   return (
-    <section className="flex flex-col gap-4 pb-56">
+    <section className="flex flex-col gap-4 pb-64">
       <div>
         <h2 className="text-xl font-bold tracking-tight">{list.name}</h2>
         {list.description && <p className="text-sm text-muted-foreground">{list.description}</p>}
@@ -117,12 +119,6 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
         </Card>
       )}
 
-      <AddFromCatalog
-        listId={listId}
-        catalogItems={catalogItems}
-        listItems={listItems}
-        onAdded={refresh}
-      />
       <AddGroupToList
         householdId={householdId}
         listId={listId}
@@ -130,15 +126,25 @@ export function ListDetailPage({ householdId }: { householdId: string }) {
         onAdded={refresh}
       />
 
-      <QuickAddItem
-        householdId={householdId}
-        listId={listId}
-        existingItems={catalogItems}
-        onAdded={() => {
-          refresh()
-          refreshCatalog()
-        }}
-      />
+      <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-20">
+        <div className="pointer-events-auto mx-auto flex max-w-[480px] flex-col gap-2 px-4">
+          <AddFromCatalog
+            listId={listId}
+            catalogItems={catalogItems}
+            listItems={listItems}
+            onAdded={refresh}
+          />
+          <QuickAddItem
+            householdId={householdId}
+            listId={listId}
+            existingItems={catalogItems}
+            onAdded={() => {
+              refresh()
+              refreshCatalog()
+            }}
+          />
+        </div>
+      </div>
     </section>
   )
 }
